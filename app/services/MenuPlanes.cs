@@ -268,72 +268,105 @@ namespace SGI.UI
                 }
                 else
                 {
-                    Console.WriteLine($"\nPlan actual: {plan.Nombre}");
-                    
-                    string nombre = MenuPrincipal.LeerEntrada($"Ingrese el nuevo nombre ({plan.Nombre}): ");
-                    if (!string.IsNullOrWhiteSpace(nombre))
+                    bool regresar = false;
+                    while (!regresar)
                     {
-                        plan.Nombre = nombre;
-                    }
-                    
-                    Console.Write($"Ingrese la nueva fecha de inicio ({plan.FechaInicio:dd/MM/yyyy}): ");
-                    string fechaInicioStr = Console.ReadLine() ?? "";
-                    if (!string.IsNullOrWhiteSpace(fechaInicioStr) && DateTime.TryParse(fechaInicioStr, out DateTime fechaInicio))
-                    {
-                        plan.FechaInicio = fechaInicio;
-                    }
-                    
-                    Console.Write($"Ingrese la nueva fecha de fin ({plan.FechaFin:dd/MM/yyyy}): ");
-                    string fechaFinStr = Console.ReadLine() ?? "";
-                    if (!string.IsNullOrWhiteSpace(fechaFinStr) && DateTime.TryParse(fechaFinStr, out DateTime fechaFin))
-                    {
-                        plan.FechaFin = fechaFin;
-                    }
-                    
-                    // Validar que la fecha de fin sea posterior a la de inicio
-                    if (plan.FechaFin < plan.FechaInicio)
-                    {
-                        MenuPrincipal.MostrarMensaje("\nError: La fecha de fin debe ser posterior a la fecha de inicio.", ConsoleColor.Red);
+                        Console.Clear();
+                        MenuPrincipal.MostrarEncabezado("MODIFICAR PLAN PROMOCIONAL");
+                        Console.WriteLine($"\nPlan actual: {plan.Nombre}");
+                        Console.WriteLine("\n¿Qué desea modificar?");
+                        Console.WriteLine("1. Nombre del plan");
+                        Console.WriteLine("2. Fecha de inicio");
+                        Console.WriteLine("3. Fecha de fin");
+                        Console.WriteLine("4. Porcentaje de descuento");
+                        Console.WriteLine("5. Productos del plan");
+                        Console.WriteLine("0. Regresar");
+                        
+                        Console.Write("\nSeleccione una opción: ");
+                        string opcion = Console.ReadLine() ?? "";
+                        
+                        switch (opcion)
+                        {
+                            case "1":
+                                string nombre = MenuPrincipal.LeerEntrada($"Ingrese el nuevo nombre ({plan.Nombre}): ");
+                                if (!string.IsNullOrWhiteSpace(nombre))
+                                {
+                                    plan.Nombre = nombre;
+                                }
+                                break;
+                                
+                            case "2":
+                                DateTime fechaInicio = MenuPrincipal.LeerFecha($"Ingrese la nueva fecha de inicio ({plan.FechaInicio:d}): ");
+                                if (fechaInicio > plan.FechaFin)
+                                {
+                                    MenuPrincipal.MostrarMensaje("\nError: La fecha de inicio debe ser anterior a la fecha de fin.", ConsoleColor.Red);
+                                    Console.ReadKey();
+                                    continue;
+                                }
+                                plan.FechaInicio = fechaInicio;
+                                break;
+                                
+                            case "3":
+                                DateTime fechaFin = MenuPrincipal.LeerFecha($"Ingrese la nueva fecha de fin ({plan.FechaFin:d}): ");
+                                if (fechaFin < plan.FechaInicio)
+                                {
+                                    MenuPrincipal.MostrarMensaje("\nError: La fecha de fin debe ser posterior a la fecha de inicio.", ConsoleColor.Red);
+                                    Console.ReadKey();
+                                    continue;
+                                }
+                                plan.FechaFin = fechaFin;
+                                break;
+                                
+                            case "4":
+                                decimal descuento = 0;
+                                while (true)
+                                {
+                                    Console.Write($"Ingrese el nuevo porcentaje de descuento ({plan.Descuento:P}): ");
+                                    if (decimal.TryParse(Console.ReadLine(), out descuento) && descuento >= 0 && descuento <= 100)
+                                    {
+                                        plan.Descuento = descuento / 100;
+                                        break;
+                                    }
+                                    MenuPrincipal.MostrarMensaje("\nError: El descuento debe estar entre 0 y 100.", ConsoleColor.Red);
+                                }
+                                break;
+                                
+                            case "5":
+                                await AgregarProductosAlPlan(plan);
+                                break;
+                                
+                            case "0":
+                                regresar = true;
+                                continue;
+                                
+                            default:
+                                MenuPrincipal.MostrarMensaje("\nOpción no válida. Intente nuevamente.", ConsoleColor.Yellow);
+                                Console.ReadKey();
+                                continue;
+                        }
+                        
+                        bool resultado = await _planRepository.UpdateAsync(plan);
+                        
+                        if (resultado)
+                        {
+                            MenuPrincipal.MostrarMensaje("\nPlan actualizado correctamente.", ConsoleColor.Green);
+                        }
+                        else
+                        {
+                            MenuPrincipal.MostrarMensaje("\nNo se pudo actualizar el plan.", ConsoleColor.Red);
+                        }
+                        
+                        Console.Write("\nPresione cualquier tecla para continuar...");
                         Console.ReadKey();
-                        return;
-                    }
-                    
-                    Console.Write($"Ingrese el nuevo porcentaje de descuento ({plan.Descuento:P0}): ");
-                    string descuentoStr = Console.ReadLine() ?? "";
-                    if (!string.IsNullOrWhiteSpace(descuentoStr) && decimal.TryParse(descuentoStr, out decimal descuento) && descuento >= 0 && descuento <= 100)
-                    {
-                        plan.Descuento = descuento / 100; // Convertir de porcentaje a decimal
-                    }
-                    
-                    // Preguntar si desea modificar los productos
-                    string modificarProductos = MenuPrincipal.LeerEntrada("\n¿Desea modificar los productos del plan? (S/N): ");
-                    
-                    if (modificarProductos.ToUpper() == "S")
-                    {
-                        // Limpiar la lista de productos y agregar los nuevos
-                        plan.Productos.Clear();
-                        await AgregarProductosAlPlan(plan);
-                    }
-                    
-                    bool resultado = await _planRepository.UpdateAsync(plan);
-                    
-                    if (resultado)
-                    {
-                        MenuPrincipal.MostrarMensaje("\nPlan promocional actualizado correctamente.", ConsoleColor.Green);
-                    }
-                    else
-                    {
-                        MenuPrincipal.MostrarMensaje("\nNo se pudo actualizar el plan promocional.", ConsoleColor.Red);
                     }
                 }
             }
             catch (Exception ex)
             {
                 MenuPrincipal.MostrarMensaje($"\nError al modificar el plan: {ex.Message}", ConsoleColor.Red);
+                Console.Write("\nPresione cualquier tecla para continuar...");
+                Console.ReadKey();
             }
-            
-            Console.Write("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
         }
         
         private async Task EliminarPlan()
