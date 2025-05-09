@@ -1,0 +1,6 @@
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.csproj.AssemblyReference.cache
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.AssemblyInfoInputs.cache
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.AssemblyInfo.cs
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.csproj.CoreCompileInputs.cache
+C:\Users\omarc\Documents\GitHub\inventario\obj\Debug\net8.0\inventario.sourcelink.json
