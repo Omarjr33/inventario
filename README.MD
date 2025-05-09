@@ -11,6 +11,7 @@ Sistema de gestión de inventario desarrollado en **C# con .NET 8.0** y **MySQL*
 - [🧱 Arquitectura en Capas](#-arquitectura-en-capas)
 - [📦 Modelo de Dominio](#-modelo-de-dominio)
 - [🔄 Flujo de la Aplicación](#-flujo-de-la-aplicación)
+- [🗄️ Configuración de la Base de Datos](#️-configuración-de-la-base-de-datos)
 - [🚀 Cómo Comenzar](#-cómo-comenzar)
 - [📤 Despliegue](#-despliegue)
 - [✅ Pruebas](#-pruebas)
@@ -70,6 +71,33 @@ Representación de entidades como `Producto`, `Venta`, `Compra`, `Empleado`, `Cl
 2. **Menú Principal**: Interfaz que permite elegir operaciones (ventas, productos, compras...).
 3. **Gestión**: Clases especializadas manejan operaciones específicas.
 4. **Persistencia**: Las acciones se guardan en MySQL por medio de repositorios.
+
+---
+
+## 🗄️ Configuración de la Base de Datos
+
+Antes de comenzar a usar la aplicación, es necesario configurar la base de datos MySQL:
+
+1. **Crear la Base de Datos**:
+   - Abre MySQL Workbench o tu cliente MySQL preferido
+   - Ejecuta el script `db/ddl.sql` para crear la estructura de la base de datos
+   - Este script creará todas las tablas necesarias para el funcionamiento del sistema
+
+2. **Insertar Datos Iniciales**:
+   - Ejecuta el script `db/dml.sql` para insertar los datos de prueba
+   - Este script incluye datos de ejemplo para todas las tablas
+
+3. **Configurar la Conexión**:
+   - Abre el archivo `app/config/AppSettings.cs`
+   - Actualiza la cadena de conexión con tus credenciales:
+   ```csharp
+   public static string ConnectionString = "Server=localhost;Database=sgi_campus;Uid=tu_usuario;Pwd=tu_contraseña;";
+   ```
+
+4. **Verificar la Conexión**:
+   - Asegúrate de que el servidor MySQL esté en ejecución
+   - La base de datos `sgi_campus` debe estar creada y accesible
+   - Las credenciales en `AppSettings.cs` deben coincidir con tu configuración de MySQL
 
 ---
 
