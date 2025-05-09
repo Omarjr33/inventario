@@ -10,6 +10,7 @@ namespace SGI.UI
         private readonly MenuCompras _menuCompras;
         private readonly MenuCaja _menuCaja;
         private readonly MenuPlanes _menuPlanes;
+        private readonly MenuTerceros _menuTerceros;
         
         public MenuPrincipal()
         {
@@ -18,6 +19,7 @@ namespace SGI.UI
             _menuCompras = new MenuCompras();
             _menuCaja = new MenuCaja();
             _menuPlanes = new MenuPlanes();
+            _menuTerceros = new MenuTerceros();
         }
         
         public void MostrarMenu()
@@ -27,15 +29,23 @@ namespace SGI.UI
             while (!salir)
             {
                 Console.Clear();
-                MostrarEncabezado("SISTEMA DE GESTIÓN DE COMPRAS E INVENTARIO");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\n╔════════════════════════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║                SISTEMA DE GESTIÓN DE COMPRAS E INVENTARIO                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════════════════════════╝");
                 
-                Console.WriteLine("\nMENÚ PRINCIPAL:");
-                Console.WriteLine("1. Gestión de Productos");
-                Console.WriteLine("2. Gestión de Ventas");
-                Console.WriteLine("3. Gestión de Compras");
-                Console.WriteLine("4. Movimientos de Caja");
-                Console.WriteLine("5. Gestión de Planes Promocionales");
-                Console.WriteLine("0. Salir");
+                Console.WriteLine("\n╔════════════════════════════════════╗");
+                Console.WriteLine("║            MENÚ PRINCIPAL          ║");
+                Console.WriteLine("╠════════════════════════════════════╣");
+                Console.WriteLine("║ 1. Gestión de Productos            ║");
+                Console.WriteLine("║ 2. Gestión de Ventas               ║");
+                Console.WriteLine("║ 3. Gestión de Compras              ║");
+                Console.WriteLine("║ 4. Movimientos de Caja             ║");
+                Console.WriteLine("║ 5. Gestión de Planes Promocionales ║");
+                Console.WriteLine("║ 6. Gestión de Personas             ║");
+                Console.WriteLine("║ 0. Salir                           ║");
+                Console.WriteLine("╚════════════════════════════════════╝");
+                Console.ResetColor();
                 
                 Console.Write("\nSeleccione una opción: ");
                 string opcion = Console.ReadLine() ?? "";
@@ -43,31 +53,43 @@ namespace SGI.UI
                 switch (opcion)
                 {
                     case "1":
-                        _menuProductos.MostrarMenu();
+                        var menuProductos = new MenuProductos();
+                        menuProductos.MostrarMenu();
                         break;
                     case "2":
-                        _menuVentas.MostrarMenu();
+                        var menuVentas = new MenuVentas();
+                        menuVentas.MostrarMenu();
                         break;
                     case "3":
-                        _menuCompras.MostrarMenu();
+                        var menuCompras = new MenuCompras();
+                        menuCompras.MostrarMenu();
                         break;
                     case "4":
-                        _menuCaja.MostrarMenu();
+                        var menuCaja = new MenuCaja();
+                        menuCaja.MostrarMenu();
                         break;
                     case "5":
-                        _menuPlanes.MostrarMenu();
+                        var menuPlanes = new MenuPlanes();
+                        menuPlanes.MostrarMenu();
+                        break;
+                    case "6":
+                        var menuTerceros = new MenuTerceros();
+                        menuTerceros.MostrarMenu();
                         break;
                     case "0":
                         salir = true;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\n╔════════════════════════════════════╗");
+                        Console.WriteLine("║        ¡HASTA PRONTO!              ║");
+                        Console.WriteLine("╚════════════════════════════════════╝");
+                        Console.ResetColor();
                         break;
                     default:
-                        MostrarMensaje("Opción no válida. Intente nuevamente.", ConsoleColor.Yellow);
+                        MostrarMensaje("Opción no válida. Intente nuevamente.", ConsoleColor.Red);
                         Console.ReadKey();
                         break;
                 }
             }
-            
-            MostrarMensaje("\n¡Gracias por usar el Sistema de Gestión de Compras e Inventario!", ConsoleColor.Cyan);
         }
         
         public static void MostrarEncabezado(string titulo)
