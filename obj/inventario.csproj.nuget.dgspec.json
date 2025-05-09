@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\omarc\\Documents\\GitHub\\inventario\\inventario.csproj": {}
+    "A:\\crtradol\\inventario\\inventario.csproj": {}
   },
   "projects": {
-    "C:\\Users\\omarc\\Documents\\GitHub\\inventario\\inventario.csproj": {
+    "A:\\crtradol\\inventario\\inventario.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\omarc\\Documents\\GitHub\\inventario\\inventario.csproj",
+        "projectUniqueName": "A:\\crtradol\\inventario\\inventario.csproj",
         "projectName": "inventario",
-        "projectPath": "C:\\Users\\omarc\\Documents\\GitHub\\inventario\\inventario.csproj",
-        "packagesPath": "C:\\Users\\omarc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\omarc\\Documents\\GitHub\\inventario\\obj\\",
+        "projectPath": "A:\\crtradol\\inventario\\inventario.csproj",
+        "packagesPath": "C:\\Users\\Raul Ramirez Puyo\\.nuget\\packages\\",
+        "outputPath": "A:\\crtradol\\inventario\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\omarc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Raul Ramirez Puyo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
